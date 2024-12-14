@@ -20,10 +20,13 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.use('/events', require('./routes/eventRoutes')); // Correctly integrate event routes
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// The backend should listen on the port provided by Render (process.env.PORT)
+const PORT = process.env.PORT || 5000;  // Default to 5000 if not provided
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
 
-// Add this to the backend server.js
+// Add this to the backend server.js to handle the POST request for events
 app.post('/events', async (req, res) => {
     const { name, date, time, location, description, capacity, availableSeats } = req.body;
     const newEvent = new Event({
